@@ -10,14 +10,18 @@
           <set>
             <option value="$PROJECT_DIR$" />
             <option value="$PROJECT_DIR$/app" />
+            <option value="$PROJECT_DIR$/appbarscroll" />
             <option value="$PROJECT_DIR$/pageradapterdemo" />
+            <option value="$PROJECT_DIR$/scrollview" />
           </set>
         </option>
         <option name="myModules">
           <set>
             <option value="$PROJECT_DIR$" />
             <option value="$PROJECT_DIR$/app" />
+            <option value="$PROJECT_DIR$/appbarscroll" />
             <option value="$PROJECT_DIR$/pageradapterdemo" />
+            <option value="$PROJECT_DIR$/scrollview" />
           </set>
         </option>
       </GradleProjectSettings>

@@ -2,6 +2,7 @@ package com.hyperchain.niceweather;
 
 import android.animation.Animator;
 import android.animation.ObjectAnimator;
+import android.content.Intent;
 import android.media.Image;
 import android.os.Bundle;
 import android.support.design.widget.FloatingActionButton;
@@ -57,6 +58,11 @@ public class MainActivity extends AppCompatActivity
     double endX = 0;
     double endY = 0;
 
+    //存储当前的城市
+    String countyName;
+    MainFragment mainFragment;
+    MultiFragment multiFragment;
+
 
 
 
@@ -86,8 +92,10 @@ public class MainActivity extends AppCompatActivity
         tabLayout = (TabLayout) findViewById(R.id.tabLayout);
         String[] titles = {"主页面", "多城市"};
         List<Fragment> fragments = new ArrayList<>();
-        fragments.add(new MainFragment());
-        fragments.add(new MultiFragment());
+        mainFragment =new MainFragment();
+        multiFragment = new MultiFragment();
+        fragments.add(mainFragment);
+        fragments.add(multiFragment);
         MyFragmentAdapter myFragmentAdapter = new MyFragmentAdapter(getSupportFragmentManager(), fragments, titles);
         viewPager.setAdapter(myFragmentAdapter);
         tabLayout.setOnTabSelectedListener(this);
@@ -132,10 +140,22 @@ public class MainActivity extends AppCompatActivity
         // Handle navigation view item clicks here.
         int id = item.getItemId();
 
-        if (id == R.id.nav_share) {
-
-        } else if (id == R.id.nav_send) {
-
+        switch (id){
+            case R.id.nav_choose_city:
+//                startActivity(new Intent(MainActivity.this,ChooseActivity.class));
+//                finish();
+                Intent intent = new Intent(MainActivity.this, ChooseActivity.class);
+                Log.d("tag","mainFragment.getCountyName"+mainFragment.getCountyName());
+                intent.putExtra("county_name", mainFragment.getCountyName());
+                startActivity(intent);
+                finish();
+                break;
+            case R.id.nav_multicity_management:
+                break;
+            case R.id.nav_setting:
+                break;
+            case R.id.nav_about:
+                break;
         }
 
         DrawerLayout drawer = (DrawerLayout) findViewById(R.id.drawer_layout);
@@ -167,35 +187,35 @@ public class MainActivity extends AppCompatActivity
 //    private void showToolBar(){
 //        toolbar.animate().translationY(0).setInterpolator(new AccelerateDecelerateInterpolator());
 //    }
-    public boolean dispatchTouchEvent(MotionEvent ev) {
-        switch (ev.getAction()) {
-            case MotionEvent.ACTION_DOWN:
-                startX = ev.getX();
-                startY = ev.getY();
-                break;
-            case MotionEvent.ACTION_MOVE:
-                endX = ev.getX();
-                endY = ev.getY();
-                break;
-            case MotionEvent.ACTION_UP:
-                Log.v("tag", "startX:" + startX);
-                Log.v("tag", "startY:" + startY);
-                Log.v("tag", "endX:" + endX);
-                Log.v("tag", "endY:" + endY);
-                if (endY - startY > 0 && (Math.abs(endY - startY) > 25)) {
-                    //向下滑動
-                    Log.d("tag", "向下滑动");
-//                    showToolBar();
-                } else if (endY - startY < 0 && (Math.abs(endY - startY) > 25)) {
-                    //向上滑动
-                    Log.d("tag", "向上滑动");
-//                    hideToolBar();
-                }
-                startX = startY = endX = endY = 0;
-                break;
-        }
-        return super.dispatchTouchEvent(ev);//不消费触摸事件
-    }
+//    public boolean dispatchTouchEvent(MotionEvent ev) {
+//        switch (ev.getAction()) {
+//            case MotionEvent.ACTION_DOWN:
+//                startX = ev.getX();
+//                startY = ev.getY();
+//                break;
+//            case MotionEvent.ACTION_MOVE:
+//                endX = ev.getX();
+//                endY = ev.getY();
+//                break;
+//            case MotionEvent.ACTION_UP:
+//                Log.v("tag", "startX:" + startX);
+//                Log.v("tag", "startY:" + startY);
+//                Log.v("tag", "endX:" + endX);
+//                Log.v("tag", "endY:" + endY);
+//                if (endY - startY > 0 && (Math.abs(endY - startY) > 25)) {
+//                    //向下滑動
+//                    Log.d("tag", "向下滑动");
+////                    showToolBar();
+//                } else if (endY - startY < 0 && (Math.abs(endY - startY) > 25)) {
+//                    //向上滑动
+//                    Log.d("tag", "向上滑动");
+////                    hideToolBar();
+//                }
+//                startX = startY = endX = endY = 0;
+//                break;
+//        }
+//        return super.dispatchTouchEvent(ev);//不消费触摸事件
+//    }
 
 
 }

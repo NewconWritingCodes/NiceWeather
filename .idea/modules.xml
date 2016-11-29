@@ -4,7 +4,9 @@
     <modules>
       <module fileurl="file://$PROJECT_DIR$/NiceWeather.iml" filepath="$PROJECT_DIR$/NiceWeather.iml" />
       <module fileurl="file://$PROJECT_DIR$/app/app.iml" filepath="$PROJECT_DIR$/app/app.iml" />
+      <module fileurl="file://$PROJECT_DIR$/appbarscroll/appbarscroll.iml" filepath="$PROJECT_DIR$/appbarscroll/appbarscroll.iml" />
       <module fileurl="file://$PROJECT_DIR$/pageradapterdemo/pageradapterdemo.iml" filepath="$PROJECT_DIR$/pageradapterdemo/pageradapterdemo.iml" />
+      <module fileurl="file://$PROJECT_DIR$/scrollview/scrollview.iml" filepath="$PROJECT_DIR$/scrollview/scrollview.iml" />
     </modules>
   </component>
 </project>
