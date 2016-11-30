@@ -170,4 +170,8 @@ public class NiceWeatherDB {
         }
         return list;
     }
+
+    public void deleteMultiCity(String city){
+        db.delete("MultiCity","city =?",new String[]{city});
+    }
 }
