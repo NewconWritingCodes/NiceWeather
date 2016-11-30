@@ -7,6 +7,7 @@ import android.database.sqlite.SQLiteDatabase;
 
 import com.hyperchain.niceweather.model.City;
 import com.hyperchain.niceweather.model.County;
+import com.hyperchain.niceweather.model.MultiCity;
 import com.hyperchain.niceweather.model.Province;
 
 import java.util.ArrayList;
@@ -136,6 +137,35 @@ public class NiceWeatherDB {
                         .getColumnIndex("county_code")));
                 county.setCityId(cityId);
                 list.add(county);
+            } while (cursor.moveToNext());
+        }
+        return list;
+    }
+    /*
+    将多城市界面的城市数据存入
+     */
+    public void saveMultiCity(MultiCity multiCity){
+        ContentValues contentValues = new ContentValues();
+        contentValues.put("city",multiCity.getCity());
+        contentValues.put("weather",multiCity.getWeather());
+        contentValues.put("temp",multiCity.getTemp());
+        db.insert("MultiCity",null,contentValues);
+    }
+
+    /**
+     * 从数据库读取多城市数据
+     */
+    public List<MultiCity> loadMultiCity() {
+        List<MultiCity> list = new ArrayList<MultiCity>();
+        Cursor cursor = db.query("MultiCity", null,null,
+                null, null, null, null);
+        if (cursor.moveToFirst()) {
+            do {
+                MultiCity multiCity = new MultiCity();
+                multiCity.setCity(cursor.getString(cursor.getColumnIndex("city")));
+                multiCity.setTemp(cursor.getString(cursor.getColumnIndex("temp")));
+                multiCity.setWeather(cursor.getString(cursor.getColumnIndex("weather")));
+                list.add(multiCity);
             } while (cursor.moveToNext());
         }
         return list;

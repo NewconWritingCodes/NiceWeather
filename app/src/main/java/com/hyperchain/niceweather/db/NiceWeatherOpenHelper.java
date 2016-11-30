@@ -31,6 +31,14 @@ public class NiceWeatherOpenHelper extends SQLiteOpenHelper{
             "county_name text, " +
             "county_code text, " +
             "city_id integer) ";
+    /*
+    MultiCity表建表语句
+     */
+    public static final String CREATE_MULTICITY ="create " +
+            "table MultiCity(id integer primary key autoincrement, " +
+            "city text, " +
+            "weather text, " +
+            "temp text) ";
 
     public NiceWeatherOpenHelper(Context context, String name, SQLiteDatabase.CursorFactory factory, int version) {
         super(context, name, factory, version);
@@ -41,13 +49,14 @@ public class NiceWeatherOpenHelper extends SQLiteOpenHelper{
         db.execSQL(CREATE_PROVINCE);
         db.execSQL(CREATE_CITY);
         db.execSQL(CREATE_COUNTY);
-
+        db.execSQL(CREATE_MULTICITY);
     }
 
     public void onUpgrade(SQLiteDatabase db, int oldVersion, int newVersion) {
         db.execSQL("drop table if exists Province");
         db.execSQL("drop table if exists City");
         db.execSQL("drop table if exists County");
+        db.execSQL("drop table if exists MultiCity");
         onCreate(db);
 
     }

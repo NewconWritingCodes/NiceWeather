@@ -14,16 +14,25 @@ import android.widget.ArrayAdapter;
 import android.widget.ListView;
 import android.widget.Toast;
 
+import com.hyperchain.niceweather.bean.WeatherJson;
 import com.hyperchain.niceweather.db.NiceWeatherDB;
 import com.hyperchain.niceweather.model.City;
 import com.hyperchain.niceweather.model.County;
+import com.hyperchain.niceweather.model.MultiCity;
 import com.hyperchain.niceweather.model.Province;
+import com.hyperchain.niceweather.retrofit.WeatherService;
 import com.hyperchain.niceweather.util.HttpCallbackListener;
 import com.hyperchain.niceweather.util.HttpUtil;
 import com.hyperchain.niceweather.util.Utility;
 
 import java.util.ArrayList;
 import java.util.List;
+
+import retrofit2.Call;
+import retrofit2.Callback;
+import retrofit2.Response;
+import retrofit2.Retrofit;
+import retrofit2.converter.gson.GsonConverterFactory;
 
 /**
  * Created by Newcon on 2016/11/28.
@@ -64,11 +73,15 @@ public class ChooseActivity extends Activity {
      */
     private int currentLevel;
     String oldCountyName=null;
+    int view_item=0;
+    int add_item =0;
 
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.choose_layout);
         oldCountyName = getIntent().getStringExtra("county_name");
+        view_item = getIntent().getIntExtra("view_item",0);
+        add_item = getIntent().getIntExtra("add_item",0);
         initFindViewbyId();
         initListView();
         toolbar.setNavigationOnClickListener(new View.OnClickListener() {
@@ -95,11 +108,46 @@ public class ChooseActivity extends Activity {
                     selectedCity = cityList.get(position);
                     queryCounties();
                 } else if (currentLevel == LEVEL_COUNTY) {
-                    String countyName = countyList.get(position).getCountyName();
-                    Intent intent = new Intent(ChooseActivity.this, MainActivity.class);
+                    final String countyName = countyList.get(position).getCountyName();
+                    final Intent intent = new Intent(ChooseActivity.this, MainActivity.class);
                     intent.putExtra("county_name", countyName);
-                    startActivity(intent);
-                    finish();
+                    if(add_item==0) {
+                        startActivity(intent);
+                        finish();
+                    }else{
+                        intent.putExtra("view_item",1);
+                        Retrofit retrofit = new Retrofit.Builder()
+                                .baseUrl("https://free-api.heweather.com/v5/")
+                                .addConverterFactory(GsonConverterFactory.create())
+                                .build();
+                        WeatherService weatherService = retrofit.create(WeatherService.class);
+                        Call<WeatherJson> call = weatherService.getWeather(countyName, "532ba71fed214e29907ee788e8bf8812");
+                        call.enqueue(new Callback<WeatherJson>() {
+                            @Override
+                            public void onResponse(Call<WeatherJson> call, Response<WeatherJson> response) {
+                                String weather = response.body().getHeWeather5().get(0)
+                                        .getNow().getCond().getTxt();
+                                Log.d("tag","传回来的weather为"+weather);
+                                String temp = response.body().getHeWeather5().get(0)
+                                        .getNow().getTmp();
+                                Log.d("tag","传回来的temp为"+temp);
+                                MultiCity multiCity = new MultiCity();
+                                multiCity.setCity(countyName);
+                                multiCity.setWeather(weather);
+                                multiCity.setTemp(temp);
+                                niceWeatherDB.saveMultiCity(multiCity);
+                                startActivity(intent);
+                                finish();
+
+                            }
+
+                            @Override
+                            public void onFailure(Call<WeatherJson> call, Throwable t) {
+                                System.out.println("获取失败");
+                            }
+                        });
+                    }
+
                 }
             }
         });
@@ -255,6 +303,7 @@ public class ChooseActivity extends Activity {
             Intent returnIntent = new Intent(ChooseActivity.this, MainActivity.class);
             Log.d("tag","oldCountyName"+oldCountyName);
             returnIntent.putExtra("county_name", oldCountyName);
+            returnIntent.putExtra("view_item",view_item);
             startActivity(returnIntent);
             finish();
         }

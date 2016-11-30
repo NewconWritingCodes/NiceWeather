@@ -100,6 +100,8 @@ public class MainActivity extends AppCompatActivity
         viewPager.setAdapter(myFragmentAdapter);
         tabLayout.setOnTabSelectedListener(this);
         tabLayout.setupWithViewPager(viewPager);
+        int i = getIntent().getIntExtra("view_item",0);
+        if(i==1) viewPager.setCurrentItem(1);
     }
 
     @Override
@@ -147,14 +149,12 @@ public class MainActivity extends AppCompatActivity
                 Intent intent = new Intent(MainActivity.this, ChooseActivity.class);
                 Log.d("tag","mainFragment.getCountyName"+mainFragment.getCountyName());
                 intent.putExtra("county_name", mainFragment.getCountyName());
+                intent.putExtra("view_item",viewPager.getCurrentItem());
                 startActivity(intent);
                 finish();
                 break;
             case R.id.nav_multicity_management:
-                break;
-            case R.id.nav_setting:
-                break;
-            case R.id.nav_about:
+                viewPager.setCurrentItem(1);
                 break;
         }
 
@@ -216,6 +216,4 @@ public class MainActivity extends AppCompatActivity
 //        }
 //        return super.dispatchTouchEvent(ev);//不消费触摸事件
 //    }
-
-
 }
