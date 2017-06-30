@@ -19,8 +19,6 @@ import android.widget.ListView;
 import android.widget.SimpleAdapter;
 import android.widget.Toast;
 
-import com.baidu.location.BDLocationListener;
-import com.baidu.location.LocationClient;
 import com.hyperchain.niceweather.db.NiceWeatherDB;
 import com.hyperchain.niceweather.model.MultiCity;
 

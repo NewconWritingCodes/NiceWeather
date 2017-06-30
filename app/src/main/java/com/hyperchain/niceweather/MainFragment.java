@@ -12,10 +12,6 @@ import android.widget.ListView;
 import android.widget.SimpleAdapter;
 import android.widget.TextView;
 
-import com.baidu.location.BDLocation;
-import com.baidu.location.BDLocationListener;
-import com.baidu.location.LocationClient;
-import com.baidu.location.LocationClientOption;
 import com.hyperchain.niceweather.bean.ForecastJson;
 import com.hyperchain.niceweather.bean.PictureMap;
 import com.hyperchain.niceweather.bean.WeatherJson;
@@ -63,49 +59,13 @@ public class MainFragment extends Fragment {
     String forecastWindSpeed;
     String forecastPop;
     ListView listView;
-    //定位服务
-    public LocationClient mLocationClient = null;
-    public BDLocationListener myListener = new MyLocationListener();
+
     String locationCity="宁波";
-    public class MyLocationListener implements BDLocationListener {
 
-        @Override
-        public void onReceiveLocation(BDLocation location) {
-            //Receive Location
-            //经纬度
-            double lati = location.getLatitude();
-            double longa = location.getLongitude();
-            //打印出当前位置
-            Log.i("TAG", "location.getAddrStr()=" + location.getAddrStr());
-            //打印出当前城市
-            Log.i("TAG", "location.getCity()=" + location.getCity());
-
-            locationCity =location.getCity().substring(0,location.getCity().length()-1);
-            Log.i("TAG", "locationCity=" + locationCity);
-            //返回码
-            int i = location.getLocType();
-        }
-    }
-    private void initLocation() {
-        LocationClientOption option = new LocationClientOption();
-        //就是这个方法设置为true，才能获取当前的位置信息
-        option.setIsNeedAddress(true);
-        option.setOpenGps(true);
-        option.setLocationMode(LocationClientOption.LocationMode.Hight_Accuracy
-        );//可选，默认高精度，设置定位模式，高精度，低功耗，仅设备
-        option.setCoorType("gcj02");//可选，默认gcj02，设置返回的定位结果坐标系
-        //int span = 1000;
-        //option.setScanSpan(span);//可选，默认0，即仅定位一次，设置发起定位请求的间隔需要大于等于1000ms才是有效的
-        mLocationClient.setLocOption(option);
-    }
 
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         view = inflater.inflate(R.layout.main_layout, container, false);
         initFindViewById();
-//        initGetFromServer();
-        mLocationClient = new LocationClient(getActivity().getApplicationContext());     //声明LocationClient类
-        mLocationClient.registerLocationListener( myListener );    //注册监听函数
-        initLocation();
         return view;
     }
 
@@ -131,7 +91,6 @@ public class MainFragment extends Fragment {
         Log.d("tag", "TempMaxTextView:" + tempMaxTextView);
         //如果没有返回值，默认定位当前城市
         if (countyName == null) {
-            mLocationClient.start();
             countyName = locationCity;
         }
         toolbar.setTitle(countyName);
