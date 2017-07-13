@@ -51,13 +51,13 @@ public class MainFragment extends Fragment {
     //forecast 内存储的信息
     List<Map<String, Object>> dataList;
     SimpleAdapter simpleAdapter;
-    String forecastWeatherIcon;
-    String forecastTempMax;
-    String forecastTempMin;
-    String forecastWeather;
-    String forecastWindDir;
-    String forecastWindSpeed;
-    String forecastPop;
+    String forecastWeatherIcon = "";
+    String forecastTempMax = "";
+    String forecastTempMin = "";
+    String forecastWeather = "";
+    String forecastWindDir = "";
+    String forecastWindSpeed = "";
+    String forecastPop = "";
     ListView listView;
 
     String locationCity="宁波";
@@ -153,13 +153,6 @@ public class MainFragment extends Fragment {
                         dataList = new ArrayList<Map<String, Object>>();
                         for (int i = 0; i < 3; i++) {
                             Map<String, Object> map = new HashMap<String, Object>();
-//                            String forecastWeatherIcon;
-//                            String forecastTempMax;
-//                            String forecastTempMin;
-//                            String forecastWeather;
-//                            String forecastWindDir;
-//                            String forecastWindSpeed;
-//                            String forecastPop;
                             forecastWeatherIcon = response.body().getHeWeather5().get(0).
                                     getDaily_forecast().get(i).getCond().getCode_d();
                             forecastTempMax = response.body().getHeWeather5().get(0).
